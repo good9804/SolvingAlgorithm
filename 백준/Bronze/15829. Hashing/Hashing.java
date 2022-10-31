@@ -2,28 +2,26 @@ import java.util.Scanner;
 import java.lang.String;
 import java.lang.Integer;
 
-public class Main {static final int M = 1234567891;
+public class Main {
     public static void main(String args[]){
         Scanner sc=new Scanner(System.in);
 
         int a=sc.nextInt();
         String[] b=new String[a];
         int current=0;
-        long sum=0;
+        int sum=0;
         double count=0;
-        long k=1;
+        double k;
         String l=sc.next();
         for(int i=0;i<a;i++){
          char input=l.charAt(i);
         current=check(input);
-         sum+=current*k%M;
-            k= k*31%M;
+         k= Math.pow(31,count);
+         sum+=current*k;
 
         count++;
         }
-        long hash=sum%M;
-        System.out.println(hash
-        );
+        System.out.println(sum);
 
     }
     public static int check(char input){
