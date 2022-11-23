@@ -5,9 +5,9 @@ class Solution {
         for(int a=1;a<=sumlength;a++){
             for (int b=1;b<=sumlength;b++){
                 if((a*b==yellow)&&((a+b)*2==sumlength)){
-                answer[0]=a+2;
-                answer[1]=b+2;
-                break;
+                answer[0]=b+2;
+                answer[1]=a+2;
+                    return answer;
             }
             }
         }
