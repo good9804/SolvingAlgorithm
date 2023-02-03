@@ -1,30 +1,34 @@
-import java.io.BufferedReader;
-import  java.util.Scanner;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.util.Arrays;
-import java.lang.String;
-import java.lang.Integer;
+import java.math.BigInteger;
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+import java.math.*;
+import java.awt.*;
+import java.util.List;
 
-public class Main {
-    public static void main(String args[]) throws IOException{
+class Main {
 
-        Scanner sc=new Scanner(System.in);
-       int a= sc.nextInt();
-        int b=sc.nextInt();
-        int c= 1;
-        int q=1;
-        int p=1;
-        for(int l=1;l<=a-b;l++){
-            c=c*l;
-        }
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        int a=Integer.parseInt(st.nextToken());
+        int b=Integer.parseInt(st.nextToken());
+        
+        int temp=1;
+        int k=1;
+        int j=1;
         for(int i=1;i<=a;i++){
-            q=q*i;
+            temp*=i;
+        }
+        for(int i=1;i<=a-b;i++){
+            k*=i;
         }
         for(int i=1;i<=b;i++){
-            p=p*i;
+            j*=i;
         }
-        System.out.println(q/(p*c));
-       }
+        System.out.println(temp/(k*j));
 
-            }
+}}
+
+
