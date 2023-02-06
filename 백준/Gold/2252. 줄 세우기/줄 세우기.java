@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
-
 public class Main {
 	static int[] arr;
 	static int temp;
@@ -45,10 +44,7 @@ public class Main {
 	int count=0;
 	while(!q.isEmpty()) {
 		int current=q.poll();
-		count++;
-		if(count==0) {
-			sb.append(current);
-		}else {sb.append(current).append(" ");}
+	sb.append(current).append(" ");
 	
 		for(int i=0;i<graph[current].size();i++) {
 			if(arr[graph[current].get(i)]>0) {
