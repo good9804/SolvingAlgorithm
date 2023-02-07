@@ -14,12 +14,10 @@ import java.util.StringTokenizer;
 public class Main {
 	static ArrayList<node>[] lists;
 	
-	static int k;
-	static int[] order;
+	
 	static int size;
-	static boolean[] visited;
+	
 	static int[] arr;
-	static int answer;
 	public static void main(String[] args) throws IOException {
 			
 	BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
@@ -28,7 +26,6 @@ public class Main {
 	int line=Integer.parseInt(st.nextToken());
 	int start=Integer.parseInt(br.readLine());
 	lists=new ArrayList[size+1];
-	visited=new boolean[size+1];
 	arr=new int[size+1];
 	for(int i=1;i<=size;i++) {
 		lists[i]=new ArrayList<node>();
@@ -86,3 +83,4 @@ class node implements Comparable<node>{
 		return Integer.compare(this.cost, n.cost);
 	}
 }
+
