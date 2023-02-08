@@ -1,97 +1,85 @@
 
-import java.math.BigInteger;
-import java.util.*;
-import java.lang.*;
 import java.io.*;
-import java.math.*;
-import java.awt.*;
-import java.util.List;
-
-class Main {
-    static long[] sumarr;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int leafcount = Integer.parseInt(st.nextToken());
-        long[] arr=new long[leafcount+1];
-
-        int changenum = Integer.parseInt(st.nextToken());
-        int sumcount = Integer.parseInt(st.nextToken());
-
-        for(int i=1;i<=leafcount;i++){
-            arr[i] = Long.parseLong(br.readLine());
-        }
-        double allnode=0;
-        int k=0;
-        while(allnode<leafcount){
-            k++;
-            allnode=Math.pow(2,k);
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.StringTokenizer;
+public class Main {
+	static long[] hap;
+	static int logn;
+	static int size;
 
 
-        }
+	public static void main(String[] args) throws IOException{
+			
+	BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+	StringTokenizer st=new StringTokenizer(br.readLine());
+	size=Integer.parseInt(st.nextToken());
+	logn=0;
+	for(int i=1;i<=size;i*=2) {
+		logn++;}
+	
+	long allsize=(long)Math.pow(2, logn+1);
+	long firstindex=(long)Math.pow(2, logn);
+	
+	hap=new long[(int)allsize*2];
+	
+	
+	
+	int line=Integer.parseInt(st.nextToken())+Integer.parseInt(st.nextToken());
+	
+	for(int i=0;i<size;i++) {
+		long temp=Long.parseLong(br.readLine());
+		hap[(int)firstindex+i]=temp;
+		makehap(temp, firstindex+i);
+	}
+	StringBuilder sb=new StringBuilder();
+	for(int i=0;i<line;i++) {
+		st=new StringTokenizer(br.readLine());
+		int choice=Integer.parseInt(st.nextToken());
+		if(choice==1) {
+			long changeindex=Long.parseLong(st.nextToken());
+			long number=Long.parseLong(st.nextToken());
+			long temp=number-hap[(int)(firstindex+changeindex)-1];
+			hap[(int)firstindex+(int)changeindex-1]=number;
+			makehap(temp,(long)firstindex+changeindex-1);
+			
+		}
+		else {
+			long left=Long.parseLong(st.nextToken());
+			long right=Long.parseLong(st.nextToken());
+			long start=firstindex+left-1;
+			long end=firstindex+right-1;
+			long sum=0;
+			while(start<=end) {
+			if(start%2==1) {
+				sum+=hap[(int)start++];
+			}
+			if(end%2==0) {
+				sum+=hap[(int)end--];
+			}
+			start/=2;
+			end/=2;}
+			sb.append(sum).append("\n");
+			
+		}
+	}
+	System.out.println(sb);
 
-        int firstindex=(int) allnode;
-        sumarr = new long[firstindex*2];
-        int i=1;
-        for(int j=firstindex;j<allnode+leafcount;j++){
-        sumarr[j]=arr[i++];
-        }
-
-           int depthindex= (int) Math.pow(2,k);
-        for(int j=depthindex;j<depthindex*2;j++){
-            maketree(j,sumarr[j]);
-        }
-
-
-        for(int a=0;a<changenum+sumcount;a++){
-            st = new StringTokenizer(br.readLine());
-            if(st.nextToken().equals("1")){
-            while (st.hasMoreTokens()){
-                int temp=Integer.parseInt(st.nextToken());
-                long num = Long.parseLong(st.nextToken());
-                maketree(firstindex+temp-1,-sumarr[firstindex+temp-1]);
-                sumarr[firstindex+temp-1]=num;
-
-                arr[temp]=num;
-
-                maketree(firstindex+temp-1,sumarr[firstindex+temp-1]);
-            }}
-            else{
-
-                int start=Integer.parseInt(st.nextToken());
-                int end = Integer.parseInt(st.nextToken());
-                int left=firstindex+start-1;
-                int right=firstindex+end-1;
-                long sum=0;
-                while(left<=right){
-                if(left%2==1){
-                    sum+=sumarr[left++];
-
-                }
-                if(right%2==0){
-                    sum+=sumarr[right--];
-
-                }
-
-                    left/=2;
-                    right/=2;}
-                System.out.println(sum);
-
-            }
-        }
-
-
-
-
-
-    }
-    public static void maketree(int index,long num){
-        if(index==1){return;}
-       sumarr[index/2]+=num;
-       maketree(index/2,num);
-    }
 }
-
-
-
-
+	static void makehap(long k,long index) {
+		int temp=(int)index/2;
+		while(temp!=0) {
+			hap[temp]+=k;
+			temp/=2;
+			}
+			
+	}
+	
+	}
