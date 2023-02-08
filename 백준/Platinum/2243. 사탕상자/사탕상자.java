@@ -1,64 +1,72 @@
-import java.lang.*;
+
 import java.io.*;
-import java.util.*;
-import java.math.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.StringTokenizer;
 public class Main {
-static int[] candyindex;
-static int firstindex;
-static int answer;
-    public static void main(String[] args) throws IOException {
+	static long[] hap;
+	static int logn;
+	static int size;
+	static int firstindex;
+static long answer;
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb=new StringBuilder();
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int test=Integer.parseInt(st.nextToken());
-        int k=0;
-        double treeindex=0;
-        while(treeindex<1000000){
-            k++;
-            treeindex=Math.pow(2,k);
-
-        }
-        int size=(int)Math.pow(2,k+1);
-        firstindex=(int) treeindex;
-        candyindex=new int[size];
-
-        for(int i=0;i<test;i++){
-            st=new StringTokenizer(br.readLine());
-            int choice=Integer.parseInt(st.nextToken());
-            if(choice==1){
-                int rank=Integer.parseInt(st.nextToken());
-               find(rank,1);
-                System.out.println(answer-firstindex+1);
-                candyindex[answer]-=1;
-                maketree(answer,-1);
-
-            }
-            else{
-                int candy=Integer.parseInt(st.nextToken());
-                int count=Integer.parseInt(st.nextToken());
-                candyindex[firstindex+candy-1]+=count;
-                maketree(firstindex+candy-1,count);
-            }
-        }
-
-
-
-    }
-static void maketree(int index,int num){
-        if(index==1){return;}
-        candyindex[index/2]+=num;
-        maketree(index/2,num );
+	public static void main(String[] args) throws IOException{
+			
+		
+	BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+	int line=Integer.parseInt(br.readLine());
+	logn=0;
+	for(int i=1;i<=1000000;i*=2) {logn++;}
+	hap=new long[(int)Math.pow(2, logn+1)];
+	 firstindex=(int)Math.pow(2, logn);
+	for(int i=0;i<line;i++) {
+	StringTokenizer st=new StringTokenizer(br.readLine());
+		
+	int choice=Integer.parseInt(st.nextToken());
+	if(choice==1) {
+		int rank=Integer.parseInt(st.nextToken());
+		find(rank,1);
+		hap[(int)answer]-=1;
+		makehap((int)answer,-1);
+		System.out.println(answer-firstindex+1);
+		answer=0;
+		}
+	
+	else {
+		int candy=Integer.parseInt(st.nextToken());
+		int count=Integer.parseInt(st.nextToken());
+		hap[firstindex+candy-1]+=count;
+		makehap(firstindex+candy-1, count);
+	}
+	}
 
 }
-static void find(int rank,int index){
-        if(index>=firstindex){answer= index;return;}
-        if(rank<=candyindex[index*2]){
-            find(rank,index*2);
-        }
-            else{ rank-=candyindex[index*2];
-        find(rank,index*2+1);}
-
-    }
-
-}
+	static void find(int rank,int index) {
+		if(index>=firstindex) {
+			answer=index;
+			return ;
+		}
+		if(rank<=hap[index*2]) {
+			index*=2;
+		}
+		else {
+			rank-=hap[index*2];
+			index=index*2+1;
+		}
+		find(rank, index);
+	}
+	static void makehap(int index,long num) {
+		int temp=index/2;
+		while(temp!=0) {
+			hap[temp]+=num;
+			temp/=2;
+		}
+	}
+	}
