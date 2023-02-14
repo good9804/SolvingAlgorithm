@@ -46,25 +46,25 @@ class Main {
     }
     static long maxQuery(int start, int end) {
         long result = 0;
-        while (start < end) {
+        while (start <= end) {
+            if(start == end){ result = Math.max(result, maxnode[start]);break;}
             if(start % 2 == 1) result = Math.max(result, maxnode[start]);
             if(end % 2 == 0) result = Math.max(result, maxnode[end]);
             start = (start+1)/2;
             end = (end-1)/2;
         }
-        if(start == end) result = Math.max(result, maxnode[start]);
         return result;
     }
 
     private static long minQuery(int start, int end) {
         long result = Long.MAX_VALUE;
-        while (start < end) {
+        while (start <= end) {
+            if(start == end) {result = Math.min(result, minnode[start]);break;}
             if(start % 2 == 1) result = Math.min(result, minnode[start]);
             if(end % 2 == 0) result = Math.min(result, minnode[end]);
             start = (start+1)/2;
             end = (end-1)/2;
         }
-        if(start == end) result = Math.min(result, minnode[start]);
         return result;
     }
 
