@@ -1,81 +1,68 @@
 
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.awt.*;
+import java.util.*;
 
-public class Main {
-	static ArrayList<Integer>[] smallArrayLists;
-	static ArrayList<Integer>[] bigArrayLists;
-	
-	public static void main(String[] args) throws IOException{
-	BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
-	StringTokenizer st=new StringTokenizer(br.readLine());
-	int size=Integer.parseInt(st.nextToken());
-	int line=Integer.parseInt(st.nextToken());
-	smallArrayLists=new ArrayList[size+1];
-	bigArrayLists=new ArrayList[size+1];
-	for(int i=1;i<=size;i++) {
-		smallArrayLists[i]=new ArrayList<Integer>();
-		bigArrayLists[i]=new ArrayList<Integer>();
-		
-	}
-	for(int i=0;i<line;i++) {
-		st=new StringTokenizer(br.readLine());
-		int small=Integer.parseInt(st.nextToken());
-		int big=Integer.parseInt(st.nextToken());
-		smallArrayLists[big].add(small);
-		bigArrayLists[small].add(big);
-		
-	}
-	Queue<Integer> queue=new LinkedList<Integer>();
-	int answer=0;
-	for(int i=1;i<=size;i++) {
-		queue.add(i);
-		int count=0;
-		boolean[] check=new boolean[size+1];
-		check[i]=true;
-	while(!queue.isEmpty()) {
-	int current=queue.poll();
-		for(int next:smallArrayLists[current]) {
-			if(!check[next]) {
-				count++;
-				check[next]=true;
-				queue.add(next);
-			}
-		}
-	}
-	queue.add(i);
-	while(!queue.isEmpty()) {
-		int current=queue.poll();
-			for(int next:bigArrayLists[current]) {
-				if(!check[next]) {
-					count++;
-					check[next]=true;
-					queue.add(next);
-				}
-			}
-		}
-	if(count==size-1) {
-		answer++;
-	}
-	
-	}
-	System.out.println(answer);
-	
-	
-	
-	
-	
-	
+class Main {
+    static ArrayList<Integer>[] small;
+    static ArrayList<Integer>[] big;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int size = Integer.parseInt(st.nextToken());
+        int compare = Integer.parseInt(st.nextToken());
+        small=new ArrayList[size+1];
+        big=new ArrayList[size+1];
+        for(int i=1;i<=size;i++){
+           small[i]=new ArrayList<Integer>();
+            big[i]=new ArrayList<Integer>();
+        }
+        for(int i=0;i<compare;i++){
+            st = new StringTokenizer(br.readLine());//a<b
+            int smaller=Integer.parseInt(st.nextToken());
+            int bigger=Integer.parseInt(st.nextToken());
+            big[smaller].add(bigger);
+            small[bigger].add(smaller);
+        }
+        int answer=0;
+        Queue<Integer> q=new LinkedList<>();
+        for(int i=1;i<=size;i++){
+            q.add(i);
+            int smallcount=0;
+            int bigcount=0;
+            boolean[] smallcheck=new boolean[size+1];
+            boolean[] bigcheck=new boolean[size+1];
+            while(!q.isEmpty()){
+                int temp=q.poll();
+                for(int current:small[temp]){
+                    if(!smallcheck[current]){
+                    smallcount++;
+                    q.add(current);
+                    smallcheck[current]=true;}
+                }
+            }
+            q.add(i);
+            while(!q.isEmpty()){
+                int temp=q.poll();
+                for(int current:big[temp]){
+                    if(!bigcheck[current]){
+                    bigcount++;
+                    q.add(current);
+                    bigcheck[current]=true;}
+                }
+            }
+            if(smallcount+bigcount==size-1){answer++;}
+
+        }
+        System.out.println(answer);
+
+
+
+    }
 }
-}
+
