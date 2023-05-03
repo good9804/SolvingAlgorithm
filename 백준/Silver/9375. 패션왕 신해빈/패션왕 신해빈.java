@@ -1,35 +1,46 @@
-import java.lang.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.awt.*;
 import java.util.*;
-import java.io.*;
 
-class Main{
-    public static void main(String[] args) throws IOException{
-        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
-        int testCount=Integer.parseInt(br.readLine());
-        for(int i=0;i<testCount;i++){
-            int wearCount=Integer.parseInt(br.readLine());
-            if(wearCount==0){
-                System.out.println("0");continue;
+class Main {
+    static int answer;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int testcase = Integer.parseInt(br.readLine());
+        StringBuilder sb=new StringBuilder();
+        for(int test=0;test<testcase;test++) {
+            int clothes = Integer.parseInt(br.readLine());
+            HashMap<String, Integer> clothMap = new HashMap<>();
+            for (int i = 0; i < clothes; i++) {
+                StringTokenizer st = new StringTokenizer(br.readLine());
+                String name = st.nextToken();
+                String category = st.nextToken();
+                clothMap.put(category, clothMap.getOrDefault(category, 0) + 1);
             }
-            HashMap<String,Integer> wear=new HashMap<>();
-            ArrayList<String> allWear= new ArrayList<>();
+            int answer=1;
+            if(clothMap.size()==1){
+                for (Map.Entry<String, Integer> map : clothMap.entrySet()) {
+                    answer*=map.getValue();
 
-            for(int k=0;k<wearCount;k++){
-                String[] str=br.readLine().split(" ");
-                if(!allWear.contains(str[0])){
-                    allWear.add(str[0]);
-                    wear.put(str[1],wear.getOrDefault(str[1],0)+1);
-                }}
-            Iterator<String> itr=wear.keySet().iterator();
-            int count=1;
-            while(itr.hasNext()){
-                String key=itr.next();
-                count*=wear.get(key)+1;
+                }
+                sb.append(answer).append("\n");
             }
-            System.out.println(count-1);
+            else{for (Map.Entry<String, Integer> map : clothMap.entrySet()) {
+                answer*= map.getValue()+1;
 
-
+            }
+            sb.append(answer-1).append("\n");}
         }
-    }
+        System.out.print(sb);
 
+
+    }
 }
+
