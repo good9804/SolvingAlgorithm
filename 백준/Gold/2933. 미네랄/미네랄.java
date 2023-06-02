@@ -70,29 +70,29 @@ class Main {
         if(first){
             for(int i=1;i<=col;i++){
                 if(pan[height][i]==1){//미네랄 만날시
-                    Queue<Point> queue = new LinkedList<>();
-                    HashSet<Point> apply = new HashSet<>();
+                    Queue<Point> queue = new LinkedList<>();//점들을 모으기위한 queue
+                    HashSet<Point> apply = new HashSet<>();//중력 반영받을 점들을 모은 Set
                     pan[height][i]=0;
                     boolean[][] isVisited=new boolean[row+1][col+1];//중복 방문을 방지하기위한 배열 선언
                     isVisited[height][i]=true;//시작점 체크
                     queue.add(new Point(height,i));//시작점 담기
-                    boolean[] prev=new boolean[4];
+                    boolean[] prev=new boolean[4];//bfs로 방향 한곳마다 이어져있는 덩어리를 분리하여 탐색할 것이므로 반영하기전 미리 붙어있는 얼음을 체크 
                         Point current = queue.poll();
                         for(int index=0;index<4;index++){
                             int tempx=current.x+dx[index];
                             int tempy=current.y+dy[index];
                             if(isRange(tempx,tempy)&&pan[tempx][tempy]==1&&!isVisited[tempx][tempy]){
-                                prev[index]=true;
+                                prev[index]=true;//상하좌우중 덩어리가 붙어있으면 true
                             }
                         }
                         for(int index=0;index<4;index++){//시작점에대한 방향 체크
                             int tempx=current.x+dx[index];
                             int tempy=current.y+dy[index];
-                            if(isRange(tempx,tempy)&&pan[tempx][tempy]==1&&!isVisited[tempx][tempy]&&prev[index]){
+                            if(isRange(tempx,tempy)&&pan[tempx][tempy]==1&&!isVisited[tempx][tempy]&&prev[index]){//반영되기전부터 원래 붙어있던 얼음덩어리면 탐색시작
                                 queue.add(new Point(tempx,tempy));
                                 apply.add(new Point(tempx,tempy));
                                 isVisited[tempx][tempy]=true;
-                                boolean isground = false;
+                                boolean isground = false;//땅에 붙어있는지 안붙어있는지 체크용
                                     while (!queue.isEmpty()) {
                                         Point currentpoint = queue.poll();
 
@@ -104,34 +104,35 @@ class Main {
                                                 queue.add(new Point(tempxx, tempyy));
                                                 apply.add(new Point(tempxx,tempyy));
                                                 isVisited[tempxx][tempyy] = true;
-                                                if (tempxx == row) {
-                                                    isground = true;
+                                                if (tempxx == row) {//땅에 붙어있을시 
+                                                    isground = true;//true로 변경
                                                 }
                                             }
                                         }
                                     }
-                                    if(isground){
+                                    if(isground){// 덩어리가 땅에붙어있었다면
 
                                         apply.clear();
                                         queue.clear();
-                                        continue;
-                                    }else{Iterator<Point> iterator =apply.iterator();
-                                    int min = Integer.MAX_VALUE;
+                                        continue;//set,queue 비워준후 다음 방향 덩어리 check
+                                    }else{Iterator<Point> iterator =apply.iterator();//땅이랑 떨어져있으므로 중력영향받기
+                                    int min = Integer.MAX_VALUE;//떨어지는 간격 구하기위해 min
                                     while (iterator.hasNext()) {
                                         Point p = iterator.next();
                                         pan[p.x][p.y] = 0;
                                         for (int k = p.x + 1; k <= row; k++) {
-                                            if (pan[k][p.y] == 1 && !apply.contains(new Point(k, p.y))) {
-                                                min = Math.min(min, k - p.x - 1);
+                                            if (pan[k][p.y] == 1 && !apply.contains(new Point(k, p.y))) {//set에있지않은점이며,미네랄일시
+                                                min = Math.min(min, k - p.x - 1);//땅에 붙어있는 미네랄 있는 점-원래점-1 (-1를 해준 이유는 원래 점이 3행이고 미네랄이 4행에 있을때
+                                                                                // 변경없이 가만히 있어야하니까 -1을 해줘야한다
                                                 break;
                                             }
                                         }
-                                        min = Math.min(min, row - p.x);
+                                        min = Math.min(min, row - p.x);//자기 방향 아래로 미네랄이 아예 없는경우도 고려해서 바닥-미네랄있는행
                                     }
                                     Iterator<Point> iterator2 = apply.iterator();
                                     while (iterator2.hasNext()) {
                                         Point p = iterator2.next();
-                                        pan[p.x + min][p.y] = 1;
+                                        pan[p.x + min][p.y] = 1;//간격만큼 이동
                                     }
                                 }}
 
