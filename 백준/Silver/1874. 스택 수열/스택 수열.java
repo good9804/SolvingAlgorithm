@@ -1,5 +1,4 @@
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,15 +19,15 @@ class Main{
         int index=0;
         int num=1;
         while(true){
-            if(index>=size){
+            if(index>=size){//원하는 정답 index까지 갔다면 정답 출력
                 System.out.println(sb);
                 return;
             }
-            if(num>size+1){
+            if(num>size+1){//num이 size+1를 추가하면 불가능으로 판단
                 System.out.println("NO");
                 return;
             }
-            if(!stack.isEmpty()&&stack.peek()==arr[index]){
+            if(!stack.isEmpty()&&stack.peek()==arr[index]){//스택이 비어있지않고 스택 출구가 답 비교부분과 같다면 pop
                 sb.append("-\n");
                 index++;
                 stack.pop();
