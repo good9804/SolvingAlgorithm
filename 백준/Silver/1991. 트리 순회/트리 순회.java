@@ -1,80 +1,83 @@
-import java.math.BigInteger;
-import java.util.*;
-import java.lang.*;
-import java.io.*;
-import java.math.*;
+
 import java.awt.*;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
 
 class Main {
-    static Character[][] tree;
+    static StringBuilder preanswer=new StringBuilder();
+    static StringBuilder inanswer=new StringBuilder();
+    static StringBuilder postanswer=new StringBuilder();
+    static HashMap<String,Node> nodes;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int size = Integer.parseInt(br.readLine());
-        double len = Math.pow(2, size);
-
-         tree=new Character[27][3];
+        nodes = new HashMap<>();
         for(int i=0;i<size;i++){
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int count=0;
-            int temp=0;
-            while (st.hasMoreTokens()){
-                String node=st.nextToken();
-                char node2=node.charAt(0);
-                if (count == 0) {
+            String mid = st.nextToken();
+            nodes.put(mid, new Node(mid, st.nextToken(), st.nextToken()));
 
-                    temp = node.charAt(0) - 'A';
-                    tree[temp][0] = node2;
-                } else if (count == 1) {
-                    if (node2 - 'A' == -19) {
-                        tree[temp][1] = '.';
-                    } else tree[temp][1] = node2;
-                } else {
-                    if (node2 - 'A' == -19) {
-                        tree[temp][2] = '.';
-                    } else tree[temp][2] = node2;
-                }
-                count++;
-            }
         }
-        pre(tree[0][0]);
-        System.out.println();
-        in(tree[0][0]);
-        System.out.println();
-        post(tree[0][0]);
-
-
+        pre(nodes.get("A"));
+        in(nodes.get("A"));
+        post(nodes.get("A"));
+        System.out.println(preanswer);
+        System.out.println(inanswer);
+        System.out.println(postanswer);
 
 
     }
-    public static void pre(Character node){
-       if(node.equals('.')){
-           return;
-       }
-       System.out.print(node);
-       int index=node-'A';
-       pre(tree[index][1]);
-        pre(tree[index][2]);
-    }
-    public static void in(Character node){
-        if(node.equals('.')){
-            return;
+    static void pre(Node N){
+        preanswer.append(N.mid);
+        if(!N.left.equals(".")){
+            pre(nodes.get(N.left));
+        }
+        if(!N.right.equals(".")){
+            pre(nodes.get(N.right));
         }
 
-        int index=node-'A';
-        in(tree[index][1]);
-        System.out.print(node);
-        in(tree[index][2]);
 
     }
-    public static void post(Character node){
-        if(node.equals('.')){
-            return;
-        }
+    static void in(Node N){
 
-        int index=node-'A';
-        post(tree[index][1]);
-        post(tree[index][2]);
-        System.out.print(node);
+        if(!N.left.equals(".")){
+            in(nodes.get(N.left));
+        }
+        inanswer.append(N.mid);
+        if(!N.right.equals(".")){
+            in(nodes.get(N.right));
+        }
+    }
+    static void post(Node N){
+        if(!N.left.equals(".")){
+            post(nodes.get(N.left));
+        }
+        if(!N.right.equals(".")){
+            post(nodes.get(N.right));
+        }
+        postanswer.append(N.mid);
     }
 }
+class Node{
+    String mid;
+    String left;
+    String right;
+    public Node(String mid,String left,String right){
+        this.mid=mid;
+        this.left=left;
+        this.right=right;
+    }
+
+}
+
+
+
+
+
+
+
+
+
