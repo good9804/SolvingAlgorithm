@@ -52,13 +52,8 @@ class Main {
                             if(isRange(tempx,tempy)&&pan[tempx][tempy]==0){
                                 pan[tempx][tempy]=i;
                                 virus[i].add(new Point(tempx,tempy));
-                            }else{
-                               isnot++;
                             }
 
-                        }
-                        if(isnot!=4){
-                            virus[i].add(p);
                         }
 
                     }
