@@ -1,85 +1,96 @@
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.util.*;
+
 class Main {
     static int N;
     static int M;
     static int K;
-    static int[][] pan;
-    static boolean[][][] PanChecked;
-    static int[] dx={-1,1,0,0};
-    static int[] dy={0,0,-1,1};
-    static int answer=Integer.MAX_VALUE;
+    static int[] dx={0,0,-1,1};
+    static int[] dy={1,-1,0,0};
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st=new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+                N = Integer.parseInt(st.nextToken());
+        M  = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
-        pan=new int[N][M];
-        PanChecked=new boolean[N][M][K+1];
+        boolean[][] pan=new boolean[N][M];
         for(int i=0;i<N;i++){
-            String str = br.readLine();
+            String[] str=br.readLine().split("");
             for(int j=0;j<M;j++){
-                pan[i][j]=str.charAt(j)-'0';
+                if(Integer.parseInt(str[j])>0){
+                    pan[i][j]=true;
+                }
             }
         }
-        bfs();
-        if(answer==Integer.MAX_VALUE){
-            System.out.println(-1);
+        if(N==1&&M==1){
+            System.out.println(1);
             return;
         }
-        System.out.println(answer);
-
-}
-static void bfs(){
         Queue<Point> q=new LinkedList<>();
-        q.add(new Point(0,0,1,0));
-        PanChecked[0][0][0]=true;
-        while(!q.isEmpty()){
+        q.add(new Point(0,0,0));
+        boolean[][][] isVisited=new boolean[K+1][N][M];
+        isVisited[0][0][0]=true;
+        int count=0;
+        while (!q.isEmpty()){
+            count++;
+            int qsize = q.size();
+            for(int i=0;i<qsize;i++){
                 Point cur=q.poll();
-                if(cur.x==N-1&&cur.y==M-1){
-                    answer= cur.count;
-                    return;
-                }
-            for(int i=0;i<4;i++){
-                int tempx=cur.x+dx[i];
-                int tempy=cur.y+dy[i];
-                if(isRange(tempx,tempy)&&!PanChecked[tempx][tempy][cur.boom]&&pan[tempx][tempy]==0){
-                    PanChecked[tempx][tempy][cur.boom]=true;
-                    q.add(new Point(tempx,tempy, cur.count+1, cur.boom));
-                }else {
-                    if(cur.boom<K&&isRange(tempx,tempy)&&!PanChecked[tempx][tempy][cur.boom+1]&&pan[tempx][tempy]==1){
-
-                        PanChecked[tempx][tempy][cur.boom+1]=true;
-                        q.add(new Point(tempx,tempy, cur.count+1, cur.boom+1));
+                for(int j=0;j<4;j++){
+                int tempx=cur.x+dx[j];
+                    int tempy=cur.y+dy[j];
+                    if(isRange(tempx,tempy)&&pan[tempx][tempy]&&cur.broke+1<=K){
+                if(!isVisited[cur.broke+1][tempx][tempy]){
+                        if(tempx==N-1&&tempy==M-1){
+                            System.out.println(count+1);
+                            return;
+                        }
+                        isVisited[cur.broke+1][tempx][tempy]=true;
+                        q.add(new Point(tempx,tempy,cur.broke+1));
+                        continue;
                     }
-
+                    }
+                    else if(isRange(tempx,tempy)&&!pan[tempx][tempy]&&!isVisited[cur.broke][tempx][tempy]){
+                        if(tempx==N-1&&tempy==M-1){
+                            System.out.println(count+1);
+                            return;
+                        }
+                        isVisited[cur.broke][tempx][tempy]=true;
+                        q.add(new Point(tempx,tempy,cur.broke));
+                    }
                 }
-
+                }
             }
-        }
+
+
+        System.out.println(-1);
 
 
 
-}
-static boolean isRange(int x,int y){
-        return x>=0&&y>=0&&x<N&&y<M;
-}
+    }static boolean isRange(int x,int y){
+        return x>=0&&x<N&&y>=0&&y<M;
+    }
+
+
 
 }
 class Point{
     int x;
     int y;
-    int count;
-    int boom;
-    public Point(int x,int y,int count,int boom){
+    int broke;
+    public Point(int x,int y,int broke){
         this.x=x;
         this.y=y;
-        this.count=count;
-        this.boom=boom;
+        this.broke=broke;
     }
 }
+
+
+
+
